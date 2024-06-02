@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./style.css";
 
 const messages = [
   "Learn React ⚛️",
@@ -6,103 +7,57 @@ const messages = [
   "Invest your new income 🤑",
 ];
 
-export default function App() {
-  return (
-    <div>
-      <Steps />
-      <StepMessage step={1}>
-        <p>Pass in content</p>
-        <p>✌️</p>
-      </StepMessage>
-      <StepMessage step={2}>
-        <p>Read children prop</p>
-        <p>😎</p>
-      </StepMessage>
-      {/* <Steps /> */}
-    </div>
-  );
-}
-
-function Steps() {
+function App() {
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(true);
 
-  // const [test, setTest] = useState({ name: "Jonas" });
-
-  function handlePrevious() {
-    if (step > 1) setStep((s) => s - 1);
-  }
-
-  function handleNext() {
-    if (step < 3) {
-      setStep((s) => s + 1);
-      // setStep((s) => s + 1);
-    }
-
-    // BAD PRACTICE
-    // test.name = "Fred";
-    // setTest({ name: "Fred" });
-  }
+  const handleNext = (_) => {
+    if (step < 3) setStep(step + 1);
+  };
+  const handlePrevious = (_) => {
+    if (step > 1) setStep(step - 1);
+  };
 
   return (
-    <div>
-      <button className="close" onClick={() => setIsOpen((is) => !is)}>
+    <>
+      <button className="displayCard" onClick={() => setIsOpen(!isOpen)}>
         &times;
       </button>
-
       {isOpen && (
-        <div className="steps">
+        <div className="container">
           <div className="numbers">
-            <div className={step >= 1 ? "active" : ""}>1</div>
-            <div className={step >= 2 ? "active" : ""}>2</div>
-            <div className={step >= 3 ? "active" : ""}>3</div>
+            <span className={step >= 1 ? "active" : ""}>1</span>
+            <span className={step >= 2 ? "active" : ""}>2</span>
+            <span className={step >= 3 ? "active" : ""}>3</span>
           </div>
-
-          <StepMessage step={step}>
-            {messages[step - 1]}
-            <div className="buttons">
-              <Button
-                bgColor="#e7e7e7"
-                textColor="#333"
-                onClick={() => alert(`Learn how to ${messages[step - 1]}`)}
-              >
-                Learn how
-              </Button>
-            </div>
-          </StepMessage>
-
+          <div>
+            <h3>
+              Step {step} : {messages[step - 1]}
+            </h3>
+          </div>
           <div className="buttons">
             <Button bgColor="#7950f2" textColor="#fff" onClick={handlePrevious}>
-              <span>👈</span> Previous
+              <span>👈 </span>Previous
             </Button>
-
             <Button bgColor="#7950f2" textColor="#fff" onClick={handleNext}>
-              Next <span>👉</span>
-              <span>🤓</span>
+              Next <span> 👉</span>
             </Button>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
-function StepMessage({ step, children }) {
-  return (
-    <div className="message">
-      <h3>Step {step}</h3>
-      {children}
-    </div>
-  );
-}
-
-function Button({ textColor, bgColor, onClick, children }) {
+function Button({ text, bgColor, textColor, onClick, children }) {
   return (
     <button
-      style={{ backgroundColor: bgColor, color: textColor }}
+      style={{ color: textColor, backgroundColor: bgColor }}
       onClick={onClick}
     >
       {children}
     </button>
   );
 }
+
+export default App;
